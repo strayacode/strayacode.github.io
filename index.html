@@ -6,5 +6,22 @@
 </head>
 <body>
     <h1>This is the official website of ChronoDS</h1>
+    <h2>First Progress Update December 2020</h2>
+    <p>Recently i've undertaken the journey of writing a DS emulator. I've decided to write a DS emulator as the DS was the console
+    that I grew up on so it holds a nostalgic value to me and it will allow me to learn some more advanced concepts (JIT, 3d graphics, etc)
+    To start with I started by writing up some basic functions to load the ARM9 and ARM7 bios and firmware but realised soon enough that to boot 
+    the firmware was a massive undertaking in ones journey to write a DS emulator so instead I switched my focus to direct booting the DS. Using the direct
+    boot values found at GBATEK (best documentation for the DS imo) I started by loading the cartridge. After some research I figured out that the Cartridge header
+    holds certain data on which data of the cartridge is initially transferred into the ARM9 and ARM7 bus at direct boot (as the cartridge is only accessible by the ARM9 and ARM7 through a protocol)
+    My goal of the month was to get TinyFB, the smallest NDS file to boot. The reason I chose this was because it required very little of the DS to be implemented, only requiring the memory to be correctly mapped,
+    a few ARM instructions and a way to transfer pixel data from a region in vram into a framebuffer. After slowly treading my way through ARM cpu documentation I implemented the instructions required to boot TinyFB (which is like none)
+    and from my eyes it seemed to all be working. Since i wanted to see some progress I opted to implement a very hacky method of rendering from display mode 2 (vram display) and at last I was greeted with a red screen on top.
+    </p>
+    <img src="images/1.png" alt="my first visual progress!!">
+    <p>After I decided to improve the accuracy of my emulator more and to clock the ARM9 and ARM7 at the appropriate clock speed. By doing this TinyFB started to segfault. Why is this? Well after about an hour of debugging (*cough* *cough* printf) I figured out I had overlooked a certain aspect of ARM data processing instructions which is the s bit
+    . In the TinyFB demo the ARM7 is immediately placed in an infinite branch loop while the ARM9 goes in a loop writing 15 bit rgb values to vram. What my tired brain didn't realise is that the ARM9 was infinitely writing to
+    vram with the address incrementing infinitely, eventually causing a segfault. This was due to no implementation of the s bit in data processing, as a bne would constantly check if the z flag was cleared. Once fixing the s bit implementation, the z flag was eventually set once vram had been written enough to display a red screen, causing the ARM9 to not branch and to make its way into an infinite branch
+    . Thus the segfault had been fixed. Next I started to implement the basic backbone of scanline rendering, and updated the rendering to check the current display mode. I've still been constantly working on ChronoDS everyday so in my January 2021 update there will be alot of progress (I hope).
+    </p>
 </body>
 </html>
