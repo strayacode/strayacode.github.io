@@ -5,6 +5,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h2>Progress Update, January 2021</h2>
+    <p>Welcome back for the 2nd progress report of my recently started DS emulator ChronoDS! This month had its downs for certain aspects of the emulator, but in the end
+    alot of nice progress was made, so lets go over it. To start with right after I wrote the first December 2020 progress report I got to work on trying to boot armwrestler,
+    a very simplistic nds rom which tests arm and thumb cpu instructions. After a couple of days of implementing instruction handlers and looking through armwrestler assembly code to fix bugs, 
+    I was finally greeted with the boot screen..., and the screenshot below shows how much of the cpu i had incorrectly implemented LOL
+    </p>
+    <img src="images/image1.png" alt="the boot screen of armwrestler">
+
+    <p>After thinking for a while, I decided to spend a couple days rewriting my entire interpreter. The main changes that came from this interpreter rewrite was that instructions were handled through a switch case statement instead of a 
+    lookup table (array of function pointers) and that also arm and thumb instructions were split into more functions so that it would be easier for me to detect which instruction functions was causing armwrestler to fail.
+    It even gave a teeny fps boost from 18fps to 22fps in armwrestler!
+    </p>
+
+    <img src="images/image2.png" alt="4 extra fps! i guess ill take it">
+
+    <p>The rewrite was definitely justified in the end, as in the next couple of days i was able to get armwrestler to pass all arm and thumb tests. However I've still got armv5 special instructions to implement so that final test will have to wait a bit...
+     Once I had done most of what was in armwrestler i had the crazy idea to try and boot through the firmware. For some context up until now I was booting the DS through direct boot, which works by taking the values that are present in cpu registers and memory
+     after the firmware has booted and using those such that a rom can be booted directly. However the firmware boot poses a much higher difficulty to get working, as it requires you to implement things such as the cartridge and firmware protocol, timers, ipc and DMA (i think).
+     Anyways i spent a week and a bit trying to boot the firmware, and for now I have gotten up to IPCFIFO and have since decided to take a break from booting through the firmware to work on getting libnds homebrew to run through direct boot.
+     However while attempting to boot the firmware I also rewrote my entire emulator code, mainly for the reason that I wouldn't have to worry about some bad bugs that would possibly waste more time for me. The emulator rewrite also suprisingly gave quite an fps boost which for myself I'm not even sure why :)
+    </p>
+
+    <img src="images/image3.png" alt="very nice fps boost!">
+
+    <p>So my goal next was to boot some libnds homebrew, which to my knowledge libnds homebrew has a specific startup which does some certain things such as the initialisation of io registers, etc. I haven't ended up booting libnds homebrew as of January, but hopefully keep an eye out for next months progress report to see some homebrew running! (not guaranteed tho :`( ).
+        Through the process of trying to boot libnds homebrew I was also able to get around to implementing some important components of the DS such as timers and DMA. At the same time a nds rom called rockwrestler booted as well which provides tests to test certain behaviour of components outside of the cpu which is a welcome step in the right direction.
+    </p>
+
+    <img src="images/image4.png" alt="rockwrestler booting!">
+
+    <p>And finally at the end of January I decided to implement another frontend which is for Qt! Qt provides a more user friendly interface for ChronoDS compared to my SDL frontend and will in the future provide some cool features so keep an eye out!</p>
+
+    <img src="images/image5.png" alt="demo of the qt frontend running rockwrestler">
+
+    <p>Next month I start uni though so unfortunately I'm going to be occupied less with ChronoDS but hopefully some progress can still be made! Until then cya!</p>
+
     <h2>First Progress Update December 2020</h2>
     <p>Recently I've undertaken the journey of writing a DS emulator. I've decided to write a DS emulator as the DS was the console
     that I grew up with so it holds nostalgic value to me and it will also allow me to learn some more advanced concepts (JIT, 3d graphics, etc).
